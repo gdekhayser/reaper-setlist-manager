@@ -1,0 +1,18 @@
+# Personal data and settings, created when the app runs
+setlists.db
+setlists.db-journal
+config.json
+metadata_overrides.json
+musicbrainz_cache.json
+rpl_backups/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Editors and OS
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store

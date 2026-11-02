@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Setlist Manager</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Setlist Manager</div>
+    <nav class="tabs">
+      <button class="tab active" data-view="setlists">Setlists</button>
+      <button class="tab" data-view="library">Song library</button>
+    </nav>
+    <div class="top-actions">
+      <button id="btn-scan" title="Look for new or changed .rpp projects">Rescan projects</button>
+      <button id="btn-settings">Settings</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="view-setlists" class="view setlists-view">
+      <aside class="pane sets-pane">
+        <div class="pane-head">
+          <h2>Setlists</h2>
+          <button id="btn-new-set" class="primary small">+ New</button>
+        </div>
+        <ul id="set-list" class="set-list"></ul>
+        <button id="btn-import" class="ghost wide">Import .rpl files…</button>
+      </aside>
+      <section class="pane editor-pane" id="editor"></section>
+      <aside class="pane picker-pane" id="picker"></aside>
+    </section>
+
+    <section id="view-library" class="view library-view" hidden>
+      <div class="lib-toolbar">
+        <input id="lib-search" type="search" placeholder="Search title, artist or path">
+        <select id="lib-mood"></select>
+        <select id="lib-effort"></select>
+        <label class="check"><input id="lib-hidden" type="checkbox"> Show hidden</label>
+        <span id="lib-count" class="muted"></span>
+        <button id="btn-classify" class="lib-classify"
+          title="Look up missing artists on MusicBrainz and estimate mood and voice effort. Only empty fields are filled in.">Auto-classify</button>
+      </div>
+      <div class="table-wrap">
+        <table class="lib-table">
+          <thead>
+            <tr>
+              <th data-sort="title">Title</th>
+              <th data-sort="original_artist">Original artist</th>
+              <th data-sort="mood">Mood</th>
+              <th data-sort="voice_effort">Voice effort</th>
+              <th data-sort="length">Length</th>
+              <th data-sort="setlists">Setlists</th>
+              <th data-sort="rel_path">Project</th>
+              <th>Hidden</th>
+            </tr>
+          </thead>
+          <tbody id="lib-rows"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="dlg-settings">
+    <form method="dialog" class="dialog-body">
+      <h2>Settings</h2>
+      <p id="settings-intro" class="muted" hidden>Choose the folder that holds your REAPER song projects and the
+        folder for your setlists to get started.</p>
+      <label>Project folder (scanned for .rpp files)
+        <input name="project_root" required>
+      </label>
+      <label>Setlist folder (.rpl files are read and written here)
+        <input name="setlist_dir" required>
+      </label>
+      <label>Path written inside .rpl files
+        <input name="rpl_path_root">
+        <small class="muted">Each song is written as this folder + its path inside the project folder.
+          Leave blank to use the project folder; set it if REAPER runs on a machine that reaches the same
+          files by another path, such as a mapped drive (<code>V:\Music\Projects</code>).</small>
+      </label>
+      <p id="settings-error" class="error" hidden></p>
+      <div class="dialog-actions">
+        <button value="cancel" formnovalidate>Cancel</button>
+        <button id="settings-save" class="primary" value="default">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="dlg-import">
+    <form method="dialog" class="dialog-body">
+      <h2>Import .rpl files</h2>
+      <p class="muted">Each file becomes a setlist. Saving it later writes back to the same file
+        (the previous version is copied to <code>rpl_backups</code> first).</p>
+      <div id="import-files" class="import-files"></div>
+      <div id="import-results"></div>
+      <div class="dialog-actions">
+        <button value="cancel">Close</button>
+        <button id="import-go" class="primary" value="default">Import selected</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="dlg-delete">
+    <form method="dialog" class="dialog-body">
+      <h2>Delete setlist?</h2>
+      <p id="delete-text"></p>
+      <label class="check"><input id="delete-file" type="checkbox"> Also delete its .rpl file
+        (a copy is kept in <code>rpl_backups</code>)</label>
+      <div class="dialog-actions">
+        <button value="cancel">Cancel</button>
+        <button class="danger" value="confirm">Delete</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+  <script src="app.js"></script>
+</body>
+</html>

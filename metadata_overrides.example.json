@@ -1,0 +1,6 @@
+{
+  "_comment": "Copy to metadata_overrides.json. Songs listed here skip the MusicBrainz lookup in classifier.py. Keys are paths relative to your project folder (forward slashes, case-insensitive). Mood: Ballad, Classic Rock, 80's, Country or Dance. Effort: Low, Medium or High.",
+  "RocketMan/rocketman.rpp": {"title": "Rocket Man", "artist": "Elton John", "mood": "Ballad", "effort": "Medium"},
+  "My Song/My Song.rpp": {"title": "My Song", "artist": "Me", "mood": "Country", "effort": "Low", "notes": "Original"},
+  "Old Version/Old Version-old.rpp": {"hidden": true}
+}
